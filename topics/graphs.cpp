@@ -88,13 +88,15 @@ void dfs2(int v) {
 // for (int v : topsort)
 //   if (component[v] == 0)
 //     dfs2(v);
-// vector<int> outdeg(cnt_comp + 1, 0);
+// set<pair<int, int> > ans; // для хранения ребер в конденсации ориентированного графа
 // for (int v = 1; v <= n; v++) {
 //   for (int u : G[v]) {
-//     if (component[v] != component[u])
-//       outdeg[component[v]]++;
+//     if (component[v] != component[u]) {
+//       ans.insert({component[v], component[u]});
+//     }
 //   }
 // }
+// cout << ans.size() << '\n';
 
 // cycle check (undirected graph) + recovery
 vector<int> rec(int v, int u) {
