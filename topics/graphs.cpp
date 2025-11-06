@@ -1,10 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n; vector<vector<int> > G(n+1);
+int n;
+vector<vector<int> > G(n + 1);
 
+// diam
 pair<int, int> graph_diametr(int start) {
-  int n = (int)G.size();
+  int n = (int) G.size();
   vector<bool> used(n, false);
   vector<int> dist(n, 0);
   queue<int> q;
@@ -15,7 +17,7 @@ pair<int, int> graph_diametr(int start) {
   while (!q.empty()) {
     int tmp = q.front();
     q.pop();
-    for (int to : G[tmp]) {
+    for (int to: G[tmp]) {
       if (!used[to]) {
         used[to] = true;
         dist[to] = dist[tmp] + 1;
@@ -38,12 +40,12 @@ pair<int, int> graph_diametr(int start) {
 // auto [p1, dist1] = graph_diametr(1, G);
 // auto [p2, diam] = graph_diametr(p1, G);
 
-
+// cycle check (directed graph)
 bool cycle = 0;
 vector<int> used, par;
 void cycleCheck_orient(int v) {
   used[v] = 1;
-  for (auto to : G[v]) {
+  for (auto to: G[v]) {
     if (!used[to]) {
       par[to] = v;
       cycleCheck_orient(to);
@@ -54,21 +56,47 @@ void cycleCheck_orient(int v) {
   used[v] = 2;
 }
 
-vector<int> topsort;
+// topsort + маркировка компонент сильной связности
+vector<int> topsort, component;
+vector<vector<int> > T;
 void graph_topsort(int v) {
   used[v] = 1;
-  for (auto to : G[v]) {
-    if (!used[to]) {
-      graph_topsort(to);
-    } else if (used[to] == 1) {
-      cycle = 1;
-    }
+  for (int u: G[v]) {
+    if (!used[u]) graph_topsort(u);
   }
-  used[v] = 2;
   topsort.push_back(v);
 }
+int cnt_comp = 0;
+void dfs2(int v) {
+  component[v] = cnt_comp;
+  for (int u: T[v])
+    if (component[u] == 0)
+      dfs2(u);
+}
+// main:
+// for (int v = 0; v < n; v++)
+//   for (int u : g[v])
+//     t[u].push_back(v);
+//
+// // запускаем топологическую сортировку
+// for (int i = 0; i < n; i++)
+//   if (!used[i])
+//     dfs1(i);
+//
+// // выделяем компоненты
+// reverse(topsort.begin(), topsort.end());
+// for (int v : topsort)
+//   if (component[v] == 0)
+//     dfs2(v);
+// vector<int> outdeg(cnt_comp + 1, 0);
+// for (int v = 1; v <= n; v++) {
+//   for (int u : G[v]) {
+//     if (component[v] != component[u])
+//       outdeg[component[v]]++;
+//   }
+// }
 
-
+// cycle check (undirected graph) + recovery
 vector<int> rec(int v, int u) {
   vector<int> path;
   while (v != u) {
@@ -81,7 +109,7 @@ vector<int> rec(int v, int u) {
 vector<int> ans;
 void cycleCheck_nonorient(int v) {
   used[v] = 1;
-  for (auto to : G[v]) {
+  for (auto to: G[v]) {
     if (!used[to]) {
       par[to] = v;
       cycleCheck_nonorient(to);
@@ -103,7 +131,7 @@ void articulation_point(int v, int p) {
   used[v] = 1;
   hup[v] = h[v];
   int cnt = 0;
-  for (auto to : G[v]) {
+  for (auto to: G[v]) {
     if (to == p) continue;
     if (!used[to]) {
       h[to] = h[v] + 1;
@@ -130,7 +158,7 @@ map<pair<int, int>, int> mp; // stores numbers of edjes. for recovery
 void bridges(int v, int p) {
   used[v] = 1;
   hup[v] = h[v];
-  for (auto to : G[v]) {
+  for (auto to: G[v]) {
     if (to == p) continue;
     if (!used[to]) {
       h[to] = h[v] + 1;
