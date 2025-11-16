@@ -35,7 +35,7 @@ vector<int> factors(int n) {
   return f;
 }
 
-// fenwik treev
+// fenwik tree
 ll tree[500500];
 void addT(int k, int x) {
   for (; k <= n; k += k & -k) tree[k] += x;
@@ -48,4 +48,52 @@ ll sumT(int r) {
 
 bool cmp(pii &a, pii &b) {
   return (a.S-a.F > b.S-b.F);
+}
+
+// ax+by=c, x, y-? x - min
+void Diophantine (int a, int b, int &g, int &x, int &y) {
+  if (b == 0) {
+    g = a;
+    x = 1;
+    y = 0;
+    return;
+  }
+  int x0, y0;
+  Diophantine (b, a % b, g, x0, y0);
+  x = y0;
+  y = x0 - a / b * y0;
+}
+// void solve() {
+//   int a, b, c;
+//   cin >> a >> b >> c;
+//   int x, y, g;
+//   Diophantine (a, b, g, x, y);
+//   if (c % g) {
+//     cout << "Impossible" << '\n';
+//     return;
+//   }
+//   x *= c / g;
+//   y *= c / g;
+//   int dx = b/g, dy = a/g;
+//   int k = -x/dx;
+//   if (x + k * dx < 0) k++;
+//   x += k * dx;
+//   y -= k * dy;
+//   cout << x << " " << y;
+// }
+
+bool isPrime(int n) {
+  if (n < 2) return false;
+  for (int i = 2; i * i <= n; i++)
+    if (n % i == 0) return false;
+  return true;
+}
+
+// x^n mod m
+int modpow(int x, int n, int m) {
+  if (n == 0) return 1%m;
+  long long u = modpow(x,n/2,m);
+  u = (u*u)%m;
+  if (n%2 == 1) u = (u*x)%m;
+  return u;
 }
