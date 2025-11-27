@@ -174,3 +174,14 @@ void bridges(int v, int p) {
     }
   }
 }
+
+void dfs_depth(int v, int p) {
+  used[v] = 1;
+  for (int to : G[v]) {
+    if (to == p) continue;
+    if (!used[to]) {
+      h[to] = h[v] + 1;
+      dfs_depth(to, v);
+    }
+  }
+}
