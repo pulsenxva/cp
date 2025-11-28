@@ -85,10 +85,6 @@ ll sumT(int r) {
   return res;
 }
 
-bool cmp(pair<int, int> &a, pair<int, int> &b) {
-  return (a.second - a.first > b.second - b.first);
-}
-
 // ax+by=c, x, y-? x - min
 void Diophantine(int a, int b, int &g, int &x, int &y) {
   if (b == 0)
