@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 
+// scanline
 struct Event {
   int x, type;
   bool operator<(const Event& e) const {
@@ -8,6 +9,33 @@ struct Event {
   }
 };
 
-bool cmp(pair<int, int> &a, pair<int, int> &b) {
-  return (a.second - a.first > b.second - b.first);
-}
+// faster mst alternative
+struct heap { 
+  priority_queue<int> pq, rem;
+
+  void push(int x) {
+    pq.push(x);
+  }
+  void erase(int x) {
+    rem.push(x);
+  }
+  int top() {
+    while(!pq.empty() && !rem.empty() && pq.top()==rem.top()) {
+      pq.pop(); rem.pop();
+    }
+    return pq.top();
+  }
+
+  ///////////////
+  // heap pqmx, pqmn;
+  // add x:
+  //   pqmx.push(x)
+  //   pqmn.push(-x)
+  // erase x:
+  //   pqmx.erase(x)
+  //   pqmn.erase(-1)
+  // return max:
+  //   return pqmx.top()
+  // return min:
+  //   return -pqmn.top()
+};
