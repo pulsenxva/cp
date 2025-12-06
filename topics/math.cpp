@@ -4,10 +4,8 @@ using namespace std;
 
 int n;
 ll gcd(ll a, ll b) {
-  if (b != 0)
-    return gcd(b, a % b);
-  else
-    return a;
+  if (b != 0) return gcd(b, a % b);
+  else return a;
 }
 
 ll lcm(ll a, ll b) {
@@ -83,6 +81,10 @@ ll sumT(int r) {
   for (; r > 0; r -= r & -r)
     res += tree[r];
   return res;
+}
+
+bool cmp(pair<int, int> &a, pair<int, int> &b) {
+  return (a.second - a.first > b.second - b.first);
 }
 
 // ax+by=c, x, y-? x - min
