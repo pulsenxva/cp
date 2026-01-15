@@ -83,10 +83,6 @@ ll sumT(int r) {
   return res;
 }
 
-bool cmp(pair<int, int> &a, pair<int, int> &b) {
-  return (a.second - a.first > b.second - b.first);
-}
-
 // ax+by=c, x, y-? x - min
 void Diophantine(int a, int b, int &g, int &x, int &y) {
   if (b == 0)
@@ -133,9 +129,16 @@ bool isPrime(int n) {
 int modpow(int x, int n, int m) {
   if (n == 0)
     return 1 % m;
-  long long u = modpow(x, n / 2, m);
+  ll u = modpow(x, n / 2, m);
   u = (u * u) % m;
   if (n % 2 == 1)
     u = (u * x) % m;
   return u;
+}
+
+ll nck(ll n, ll k) {
+	ll r = 1;
+	for(ll i = n; i > n-k; i--) r*=i;
+	for(ll i = 2; i <= k; i++) r /= i;
+	return r;
 }
