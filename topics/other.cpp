@@ -14,6 +14,16 @@ struct Event {
   }
 };
 
+int lg = __lg(n)+1;
+vector<vector<ll>> mn(lg, a);
+for (ll p = 1; p < sz(mn); p++)
+  for (ll i = 0; i + (1 << p) - 1 < n; i++)
+    mn[p][i] = min(mn[p-1][i], mn[p-1][i + (1<<(p-1))]);
+auto getMin = [&](int i, int j) {
+  int p = __lg(j-i+1);
+  return min(mn[p][i], mn[p][j+1-(1<<p)]);
+};
+
 // faster mst alternative
 struct heap { 
   priority_queue<int> pq, rem;
